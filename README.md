@@ -10,6 +10,7 @@ Brahms-MMS is a tool designed to efficiently manage large music collections loca
 
 ### Backend
 
+- **Mutagen**: Reading meta information from audio files.
 - **Flask**: Lightweight Python web framework.
 - **Python**: Programming language used for backend development.
 - **SQLite**: Embedded relational database management system.
