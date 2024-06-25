@@ -6,12 +6,15 @@ import fallbackImage from '../images/fallback-cover.jpg'; // Adjust path based o
 const SearchBar = () => {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
+    const [hasTyped, setHasTyped] = useState(false); // New state for tracking typing
 
     const handleSearch = async (event) => {
         setQuery(event.target.value);
-        if (event.target.value.length > 2) {  // Trigger search on input length > 2. It might make sense to check if that has an impact performance wise
+        setHasTyped(true); // Update hasTyped to true when typing starts
+        if (event.target.value.length > 0) {
             try {
                 const response = await axios.get(`/api/search?query=${event.target.value}`);
+                console.log('API Response:', response.data);
                 setResults(response.data);
             } catch (error) {
                 console.error('Error fetching search results', error);
@@ -31,7 +34,7 @@ const SearchBar = () => {
                 placeholder="Title, Artist, or Album..." 
             />
             <div>
-                {results.length > 0 && (
+                {results.length > 0 ? (
                     <ul>
                         {results.map((result, index) => (
                             <li key={result.id}>
@@ -45,6 +48,8 @@ const SearchBar = () => {
                             </li>
                         ))}
                     </ul>
+                ) : (
+                    hasTyped && <p>No results found</p> // Show message if user has typed and no results found
                 )}
             </div>
         </div>

@@ -101,6 +101,6 @@ def process_files(directory, conn):
                         insert_metadata(cursor, metadata)
                         file_count += 1
     if file_count == 0:
-        print("Fehler: Der Ordner enthält keine neuen oder aktualisierten Musik-Dateien.")
+        print("Der Ordner enthält keine neuen oder aktualisierten Musik-Dateien.")
     cursor.execute('COMMIT')
     conn.commit()

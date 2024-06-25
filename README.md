@@ -28,4 +28,4 @@ Brahms-MMS is a tool designed to efficiently manage large music collections loca
 
 - **Remote Folder Support**: Integration to access and manage music stored in remote folders such as SMB shares. [TODO]
 - **Remote Database Integration**: Capability to connect and synchronize with remote databases. [TODO]
-- **External APIs Integration**: Integration with LastFM and MusicBrainz for enhanced metadata and music information retrieval. [TODO]
+- **External APIs Integration**: Integration with LastFM and MusicBrainz for enhanced metadata and music information retrieval.[TODO]
