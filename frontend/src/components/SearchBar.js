@@ -9,7 +9,7 @@ const SearchBar = () => {
 
     const handleSearch = async (event) => {
         setQuery(event.target.value);
-        if (event.target.value.length > 2) {  // Trigger search on input length > 2
+        if (event.target.value.length > 2) {  // Trigger search on input length > 2. It might make sense to check if that has an impact performance wise
             try {
                 const response = await axios.get(`/api/search?query=${event.target.value}`);
                 setResults(response.data);
