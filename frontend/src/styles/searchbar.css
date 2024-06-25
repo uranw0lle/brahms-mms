@@ -1,0 +1,43 @@
+.search-bar {
+    width: 80%;
+    height: 40px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 22px;
+    margin-bottom: 2vh;
+  }
+
+/* Reset default margin and padding for the ul */
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 15px; /* Reset default margin */
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+  align-items: center; /* Center items horizontally */
+}
+
+li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%; /* Ensure items take full width of ul */
+  max-width: 600px; /* Adjust maximum width as needed */
+  border: 1px solid #ccc; /* Optional: Add border for visual separation */
+  border-radius: 15px;
+  padding: 10px; /* Optional: Add padding for spacing */
+}
+
+li img {
+  margin-right: 10px;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+p {
+  margin: 0;
+  flex-grow: 1; /* Allow text to take remaining space */
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Show ellipsis for overflow text */
+}
