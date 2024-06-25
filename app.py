@@ -4,6 +4,7 @@ import os
 import sqlite3
 from include.database import create_database, process_files
 from include.searchfunction import search_database
+import base64
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 CORS(app)
@@ -27,7 +28,7 @@ def search():
             'title': row['title'],
             'artist': row['artist'],
             'album': row['album'],
-            'cover_art': row['cover_art'].decode('utf-8') if row['cover_art'] else '',
+            'cover_art': base64.b64encode(row['cover_art']).decode('utf-8') if row['cover_art'] else '',
         }
         for row in results
     ]
