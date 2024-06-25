@@ -20,16 +20,16 @@ def search_database(connection, search_terms, search_fields=["artist", "title", 
     search_terms_tuple = tuple([f"%{term}%" for term in search_terms] * len(search_fields))
 
     # Debugging: Print query and search terms
-    print("Query:", query)
-    print("Search terms tuple:", search_terms_tuple)
+    #print("Query:", query)
+    #print("Search terms tuple:", search_terms_tuple)
 
     try:
         cursor.execute(query, search_terms_tuple)
         results = cursor.fetchall()
-        print("Query results:", results)  # Debugging: Print results
+        #print("Query results:", results)  # Debugging: Print results
         return results
     except (Exception, sqlite3.Error) as error:
-        print("Error while searching database:", error)
+        #print("Error while searching database:", error)
         return []  # Return an empty list instead of None
     finally:
         cursor.close()
