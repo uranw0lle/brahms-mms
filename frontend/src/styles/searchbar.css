@@ -23,7 +23,7 @@ li {
   align-items: center;
   margin-bottom: 10px;
   width: 100%; /* Ensure items take full width of ul */
-  max-width: 600px; /* Adjust maximum width as needed */
+  max-width: 80%; /* Adjust maximum width as needed */
   border: 1px solid #ccc; /* Optional: Add border for visual separation */
   border-radius: 15px;
   padding: 10px; /* Optional: Add padding for spacing */

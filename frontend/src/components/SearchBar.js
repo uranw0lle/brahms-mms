@@ -25,7 +25,7 @@ const SearchBar = () => {
     };
 
     return (
-        <div>
+        <div className='container-fluid'>
             <input 
                 type="text" 
                 className='search-bar'
@@ -44,7 +44,7 @@ const SearchBar = () => {
                                     width="50" 
                                     height="50"
                                 />
-                                <p>{index + 1}. {result.title} by {result.artist} from the album {result.album}</p>
+                                <p>{index + 1}. <strong>{result.title}</strong> by <strong>{result.artist}</strong> from the album <strong>{result.album}</strong></p>
                             </li>
                         ))}
                     </ul>
