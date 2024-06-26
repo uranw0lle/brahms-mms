@@ -11,7 +11,7 @@ def search_database(connection, search_terms, search_fields=["artist", "title", 
     
     query = "SELECT DISTINCT * FROM audio_files WHERE ("
     placeholders = " OR ".join([f"{field} LIKE ? COLLATE NOCASE" for field in search_fields])
-    query += placeholders + ") ORDER BY last_modified DESC;"
+    query += placeholders + ") ORDER BY album DESC;"
     
     if isinstance(search_terms, str):
         search_terms = [search_terms]

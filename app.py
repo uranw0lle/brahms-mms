@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, request, send_from_directory
-from flask_cors import CORS
+import json
 import os
 import sqlite3
+from flask import Flask, jsonify, request, send_from_directory
+from flask_cors import CORS
 from include.database import create_database, process_files
 from include.searchfunction import search_database
 import base64
@@ -50,16 +51,37 @@ def serve(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
+def load_config():
+    config_path = 'config.json'
+    default_config = {
+        'music_directory': './Musik'
+    }
+
+    if os.path.exists(config_path):
+        with open(config_path, 'r') as f:
+            return json.load(f)
+    else:
+        with open(config_path, 'w') as f:
+            json.dump(default_config, f)
+        return default_config
+
 if __name__ == '__main__':
+    config = load_config()
+    music_directory = config.get('music_directory', './Musik')
+
+    # Ensure the music directory exists
+    if not os.path.exists(music_directory):
+        os.makedirs(music_directory)
+        print(f"Music directory created at {music_directory}")
+
     db_name = 'audio_files.db'
-    music_directory = os.getcwd()
 
     if not os.path.exists(db_name):
         conn = create_database(db_name)
-        print("Database created.")
+        print("No database found. Database created.")
     else:
         conn = sqlite3.connect(db_name)
-        print("Database already exists.")
+        print("Database already exists. Proceed ...")
 
     process_files(music_directory, conn)
     conn.close()

@@ -1,5 +1,3 @@
-# include/database.py
-
 import os
 import sqlite3
 from mutagen import File

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/searchbar.css';
-import fallbackImage from '../images/fallback-cover.jpg'; // Adjust path based on your project structure
+import fallbackImage from '../images/fallback-cover.jpg'; // Fallback if no cover art is found
 
 const SearchBar = () => {
     const [query, setQuery] = useState('');
