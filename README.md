@@ -11,7 +11,7 @@ Brahms-MMS is a tool designed to efficiently manage large music collections loca
 ### Frontend
 
 - **React**: JavaScript library for building user interfaces.
-- **Pico CSS** A leightweight CSS franework. 
+- **Pico CSS:** A leightweight CSS franework. 
 
 ### Backend
 
