@@ -1,3 +1,7 @@
+# Current Status
+
+Not usable. Have to fix the date handling if worng formatted dates are used in the ID3-Tag. 
+
 # Brahms-MMS
 
 Brahms-MMS is a tool designed to efficiently manage large music collections locally. It scans specified folders and their subfolders for audio files, extracting metadata from ID3 tags to populate a local database. While currently focused on managing music metadata and offering a robust search functionality, future plans include expanding its capabilities to manage playlists, favorite songs, albums, and artists.
