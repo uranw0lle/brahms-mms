@@ -14,4 +14,6 @@ frontend/build/
 .DS_Store
 Thumbs.db
 audio_files.db
+
+# Other files
 Music/
