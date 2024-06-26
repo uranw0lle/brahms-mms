@@ -41,10 +41,10 @@ const SearchBar = () => {
                                 <img 
                                     src={result.cover_art ? `data:image/jpeg;base64,${result.cover_art}` : fallbackImage} 
                                     alt="Cover Art" 
-                                    width="50" 
-                                    height="50"
                                 />
-                                <p>{index + 1}. <strong>{result.title}</strong> by <strong>{result.artist}</strong> from the album <strong>{result.album}</strong></p>
+                                <p><strong>{result.title}</strong><br />
+                                <i>{result.artist}</i><br />
+                                <strong>{result.album}</strong></p>
                             </li>
                         ))}
                     </ul>

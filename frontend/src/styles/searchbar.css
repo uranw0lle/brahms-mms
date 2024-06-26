@@ -34,10 +34,16 @@ li img {
   flex-shrink: 0; /* Prevent image from shrinking */
 }
 
+img {
+  width: auto;
+  height: 8vh;
+}
+
 p {
   margin: 0;
   flex-grow: 1; /* Allow text to take remaining space */
   white-space: nowrap; /* Prevent text from wrapping */
   overflow: hidden; /* Hide overflow text */
   text-overflow: ellipsis; /* Show ellipsis for overflow text */
+  text-align: left;
 }

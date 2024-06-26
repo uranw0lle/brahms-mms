@@ -2,7 +2,9 @@
 
 import React from 'react';
 import './App.css';
+import '@picocss/pico'
 import SearchBar from './components/SearchBar';
+
 
 function App() {
     return (
