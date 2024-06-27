@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "proxy": "http://localhost:5000",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,7 +18,8 @@
     "start": "react-scripts start & cd ../ & python app.py",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start-both": "python app.py & cd frontend && npm start" 
   },
   "eslintConfig": {
     "extends": [

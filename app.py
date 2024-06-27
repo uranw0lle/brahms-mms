@@ -54,7 +54,7 @@ def serve(path):
 def load_config():
     config_path = 'config.json'
     default_config = {
-        'music_directory': './Musik'
+        'music_directory': './Music'
     }
 
     if os.path.exists(config_path):

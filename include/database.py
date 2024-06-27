@@ -1,6 +1,8 @@
 import os
 import sqlite3
 from mutagen import File
+from mutagen.mp3 import HeaderNotFoundError
+from datetime import datetime
 
 def create_database(db_name):
     conn = sqlite3.connect(db_name)
@@ -49,34 +51,61 @@ def insert_metadata(cursor, metadata):
         metadata['replaygain'], metadata['key'], metadata['bpm'], metadata['last_modified']
     ))
 
+def log_error(file_path, error_message):
+    with open('error.log', 'a') as log_file:
+        log_file.write(f"{datetime.now()} - {file_path}: {error_message}\n")
+
 def get_metadata(file_path):
-    audio = File(file_path)
-    if audio is None:
-        print(f"Fehler: {file_path} ist keine unterstützte Audio-Datei oder die Datei ist beschädigt.")
+    try:
+        audio = File(file_path)
+        if audio is None:
+            log_error(file_path, "Unsupported audio file or corrupted file")
+            print(f"Fehler: {file_path} ist keine unterstützte Audio-Datei oder die Datei ist beschädigt.")
+            return None
+        
+        year_str = str(audio.tags.get('TDRC', 'Unknown').text[0]) if audio.tags and 'TDRC' in audio.tags else 'Unknown'
+        
+        try:
+            year = int(datetime.strptime(year_str, '%Y-%m-%d').year)
+        except ValueError:
+            try:
+                year = int(datetime.strptime(year_str, '%Y').year)
+            except ValueError:
+                year = 'Unknown'
+        
+        metadata = {
+            'path': os.path.dirname(file_path),
+            'filename': os.path.basename(file_path),
+            'title': str(audio.tags.get('TIT2', 'Unknown')) if audio.tags else 'Unknown',
+            'album': str(audio.tags.get('TALB', 'Unknown')) if audio.tags else 'Unknown',
+            'artist': str(audio.tags.get('TPE1', 'Unknown')) if audio.tags else 'Unknown',
+            'year': year,
+            'duration': audio.info.length if audio.info else 0,
+            'bitrate': audio.info.bitrate if audio.info else 0,
+            'genre': str(audio.tags.get('TCON', 'Unknown')) if audio.tags else 'Unknown',
+            'track_number': str(audio.tags.get('TRCK', 'Unknown')) if audio.tags else 'Unknown',
+            'disc_number': str(audio.tags.get('TPOS', 'Unknown')) if audio.tags else 'Unknown',
+            'composer': str(audio.tags.get('TCOM', 'Unknown')) if audio.tags else 'Unknown',
+            'comment': str(audio.tags.get('COMM', 'Unknown')) if audio.tags else 'Unknown',
+            'cover_art': audio.tags.get('APIC:', b'').data if audio.tags and 'APIC:' in audio.tags else None,
+            'label': str(audio.tags.get('TPUB', 'Unknown')) if audio.tags else 'Unknown',
+            'isrc': str(audio.tags.get('TSRC', 'Unknown')) if audio.tags else 'Unknown',
+            'replaygain': str(audio.tags.get('RVA2', 'Unknown')) if audio.tags else 'Unknown',
+            'key': str(audio.tags.get('TKEY', 'Unknown')) if audio.tags else 'Unknown',
+            'bpm': str(audio.tags.get('TBPM', 'Unknown')) if audio.tags else 'Unknown',
+            'last_modified': os.path.getmtime(file_path)
+        }
+        return metadata
+    
+    except HeaderNotFoundError:
+        log_error(file_path, "can't sync to MPEG frame")
+        print(f"Fehler: {file_path} kann nicht als gültige MP3-Datei gelesen werden.")
         return None
-    metadata = {
-        'path': os.path.dirname(file_path),
-        'filename': os.path.basename(file_path),
-        'title': str(audio.tags.get('TIT2', 'Unknown')) if audio.tags else 'Unknown',
-        'album': str(audio.tags.get('TALB', 'Unknown')) if audio.tags else 'Unknown',
-        'artist': str(audio.tags.get('TPE1', 'Unknown')) if audio.tags else 'Unknown',
-        'year': int(str(audio.tags.get('TDRC', 'Unknown').text[0]).strip()) if audio.tags and 'TDRC' in audio.tags else 'Unknown',
-        'duration': audio.info.length if audio.info else 0,
-        'bitrate': audio.info.bitrate if audio.info else 0,
-        'genre': str(audio.tags.get('TCON', 'Unknown')) if audio.tags else 'Unknown',
-        'track_number': str(audio.tags.get('TRCK', 'Unknown')) if audio.tags else 'Unknown',
-        'disc_number': str(audio.tags.get('TPOS', 'Unknown')) if audio.tags else 'Unknown',
-        'composer': str(audio.tags.get('TCOM', 'Unknown')) if audio.tags else 'Unknown',
-        'comment': str(audio.tags.get('COMM', 'Unknown')) if audio.tags else 'Unknown',
-        'cover_art': audio.tags.get('APIC:', b'').data if audio.tags and 'APIC:' in audio.tags else None,
-        'label': str(audio.tags.get('TPUB', 'Unknown')) if audio.tags else 'Unknown',
-        'isrc': str(audio.tags.get('TSRC', 'Unknown')) if audio.tags else 'Unknown',
-        'replaygain': str(audio.tags.get('RVA2', 'Unknown')) if audio.tags else 'Unknown',
-        'key': str(audio.tags.get('TKEY', 'Unknown')) if audio.tags else 'Unknown',
-        'bpm': str(audio.tags.get('TBPM', 'Unknown')) if audio.tags else 'Unknown',
-        'last_modified': os.path.getmtime(file_path)
-    }
-    return metadata
+
+    except Exception as e:
+        log_error(file_path, f"Unexpected error: {e}")
+        print(f"Fehler: {file_path} konnte nicht verarbeitet werden. Unerwarteter Fehler: {e}")
+        return None
 
 def get_existing_files(conn):
     cursor = conn.cursor()

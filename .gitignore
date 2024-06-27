@@ -9,11 +9,15 @@ frontend/build/
 
 # Environment files
 .env
+error.log
 
 # OS generated files
 .DS_Store
 Thumbs.db
 audio_files.db
+<<<<<<< Updated upstream
 
 # Other files
+=======
+>>>>>>> Stashed changes
 Music/
