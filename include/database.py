@@ -60,7 +60,7 @@ def get_metadata(file_path):
         audio = File(file_path)
         if audio is None:
             log_error(file_path, "Unsupported audio file or corrupted file")
-            print(f"Fehler: {file_path} ist keine unterstützte Audio-Datei oder die Datei ist beschädigt.")
+            print(f"Fehler: {file_path} is not a supported audio file or damaged.")
             return None
         
         year_str = str(audio.tags.get('TDRC', 'Unknown').text[0]) if audio.tags and 'TDRC' in audio.tags else 'Unknown'
@@ -99,12 +99,12 @@ def get_metadata(file_path):
     
     except HeaderNotFoundError:
         log_error(file_path, "can't sync to MPEG frame")
-        print(f"Fehler: {file_path} kann nicht als gültige MP3-Datei gelesen werden.")
+        print(f"Fehler: {file_path} can't be read as MPEG file.")
         return None
 
     except Exception as e:
         log_error(file_path, f"Unexpected error: {e}")
-        print(f"Fehler: {file_path} konnte nicht verarbeitet werden. Unerwarteter Fehler: {e}")
+        print(f"Fehler: {file_path} can't be read. Error: {e}")
         return None
 
 def get_existing_files(conn):
@@ -128,6 +128,6 @@ def process_files(directory, conn):
                         insert_metadata(cursor, metadata)
                         file_count += 1
     if file_count == 0:
-        print("Der Ordner enthält keine neuen oder aktualisierten Musik-Dateien.")
+        print("No new or updated audio files found. Proceed ...")
     cursor.execute('COMMIT')
     conn.commit()

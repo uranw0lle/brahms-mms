@@ -1,6 +1,9 @@
 # Current Status
 
-Not usable. Have to fix the date handling if worng formatted dates are used in the ID3-Tag. 
+Indexing and search function works.
+[TODO]: Optimizing search result page. It is currently to slow.
+Added Playlist logic. No function in the frontend yet
+[TODO]: Add frontend logic to manage playlist logic 
 
 # Brahms-MMS
 

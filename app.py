@@ -5,15 +5,13 @@ from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from include.database import create_database, process_files
 from include.searchfunction import search_database
+from include.playlist_manager import (
+    init_db, find_and_process_playlists, add_track_to_playlist, remove_track_from_playlist, get_db_connection
+)
 import base64
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 CORS(app)
-
-def get_db_connection():
-    conn = sqlite3.connect('audio_files.db')
-    conn.row_factory = sqlite3.Row
-    return conn
 
 @app.route('/api/search', methods=['GET'])
 def search():
@@ -21,7 +19,7 @@ def search():
     if not query:
         return jsonify([])
 
-    conn = get_db_connection()
+    conn = get_db_connection('audio_files.db')
     results = search_database(conn, [query])  # Pass query as a list
     formatted_results = [
         {
@@ -38,7 +36,7 @@ def search():
 
 @app.route('/api/audio_files', methods=['GET'])
 def get_audio_files():
-    conn = get_db_connection()
+    conn = get_db_connection('audio_files.db')
     audio_files = conn.execute('SELECT * FROM audio_files').fetchall()
     conn.close()
     return jsonify([dict(row) for row in audio_files])
@@ -67,7 +65,7 @@ def load_config():
 
 if __name__ == '__main__':
     config = load_config()
-    music_directory = config.get('music_directory', './Musik')
+    music_directory = config.get('music_directory', './Music')
 
     # Ensure the music directory exists
     if not os.path.exists(music_directory):
@@ -80,10 +78,12 @@ if __name__ == '__main__':
         conn = create_database(db_name)
         print("No database found. Database created.")
     else:
-        conn = sqlite3.connect(db_name)
+        conn = get_db_connection(db_name)
         print("Database already exists. Proceed ...")
 
+    init_db(conn)
     process_files(music_directory, conn)
+    find_and_process_playlists(music_directory, conn)
     conn.close()
 
     app.run(debug=True)
