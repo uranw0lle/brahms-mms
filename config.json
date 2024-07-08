@@ -1,1 +1,4 @@
-{"music_directory": "./Music", "playlist_directory": "./Music\\Playlists"}
+{
+    "music_directory": "./Music",
+    "playlist_directory": "./Music/Playlists"
+}

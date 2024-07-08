@@ -15,19 +15,22 @@ CORS(app)
 
 def load_config():
     config_file_path = 'config.json'
-    default_config = {'music_directory': './Music', 'playlist_directory': './Music/Playlists'}
+    default_config = {
+        'music_directory': './Music',
+        'playlist_directory': './Music/Playlists'
+    }
 
     if os.path.exists(config_file_path):
         with open(config_file_path, 'r') as config_file:
             return json.load(config_file)
     else:
         with open(config_file_path, 'w') as config_file:
-            json.dump(default_config, config_file)
+            json.dump(default_config, config_file, indent=4)  # Add indent for pretty printing
         return default_config
 
 def ensure_directories_exist(config):
-    music_directory = config.get('music_directory', './Music')
-    playlist_directory = config.get('playlist_directory', os.path.join(music_directory, 'Playlists'))
+    music_directory = config.get('music_directory', './Music').replace('\\', '/')
+    playlist_directory = config.get('playlist_directory', f"{music_directory}/Playlists").replace('\\', '/')
 
     # Ensure the music directory exists
     if not os.path.exists(music_directory):
@@ -42,7 +45,7 @@ def ensure_directories_exist(config):
     # Update config with playlist directory
     config['playlist_directory'] = playlist_directory
     with open('config.json', 'w') as config_file:
-        json.dump(config, config_file)
+        json.dump(config, config_file, indent=4)  # Add indent for pretty printing
 
     return music_directory, playlist_directory
 
