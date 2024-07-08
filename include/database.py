@@ -38,6 +38,11 @@ def create_database(db_name):
     conn.commit()
     return conn
 
+def get_db_connection(db_name):
+    conn = sqlite3.connect(db_name)
+    conn.row_factory = sqlite3.Row
+    return conn
+
 def insert_metadata(cursor, metadata):
     cursor.execute('''
         INSERT INTO audio_files (path, filename, title, album, artist, year, duration, bitrate, genre, track_number, 

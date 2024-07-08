@@ -4,11 +4,11 @@ import sqlite3
 import base64
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
-from include.database import create_database, process_files
+from include.database import create_database, process_files, get_db_connection
 from include.searchfunction import search_database
-from include.playlist_manager import (
-    init_db, find_and_process_playlists, add_track_to_playlist, remove_track_from_playlist, get_db_connection
-)
+# from include.playlist_manager import (
+#     init_db, find_and_process_playlists, add_track_to_playlist, remove_track_from_playlist, get_db_connection
+# )
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 CORS(app)
@@ -99,9 +99,7 @@ if __name__ == '__main__':
         conn = get_db_connection(db_name)
         print("Database already exists. Proceed ...")
 
-    init_db(conn)
     process_files(music_directory, conn)
-    find_and_process_playlists(music_directory, conn)
     conn.close()
 
     app.run(debug=True)
