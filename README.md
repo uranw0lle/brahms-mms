@@ -5,10 +5,10 @@
 * Optimized search function with pagination
 * Added first 'Add to playlist' functionality
 
-[TODO]: Adding a function to play music files
-[TODO]: Adding Playlist Management (in a different view)
-[TODO]: Adding Favourite Artist, Album, Song (with different view)
-[TODO]: Polishing mobile view
+* [TODO]: Adding a function to play music files
+* [TODO]: Adding Playlist Management (in a different view)
+* [TODO]: Adding Favourite Artist, Album, Song (with different view)
+* [TODO]: Polishing mobile view
 
 # Brahms-MMS
 
