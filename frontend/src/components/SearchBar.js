@@ -123,7 +123,9 @@ const SearchBar = () => {
                     hasTyped && !loading && <p>No results found</p>
                 )}
                 {results.length > 0 && !loading && (
-                    <button onClick={handleLoadMore}>Load More</button>
+                    <button 
+                    className='outline'
+                    onClick={handleLoadMore}>Load More</button>
                 )}
                 {loading && <p>Loading...</p>}
             </div>
@@ -137,7 +139,9 @@ const SearchBar = () => {
                             </li>
                         ))}
                     </ul>
-                    <button onClick={() => setSelectedTrack(null)}>Cancel</button>
+                    <button 
+                    className='outline'
+                    onClick={() => setSelectedTrack(null)}>Cancel</button>
                 </div>
             )}
         </div>
