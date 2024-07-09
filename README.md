@@ -1,9 +1,14 @@
 # Current Status
 
-Indexing and search function works.
-[TODO]: Optimizing search result page. It is currently to slow.
-Added Playlist logic. No function in the frontend yet
-[TODO]: Add frontend logic to manage playlist logic 
+* Initial functionality is given
+* Indexing and search function works
+* Optimized search function with pagination
+* Added first 'Add to playlist' functionality
+
+[TODO]: Adding a function to play music files
+[TODO]: Adding Playlist Management (in a different view)
+[TODO]: Adding Favourite Artist, Album, Song (with different view)
+[TODO]: Polishing mobile view
 
 # Brahms-MMS
 
@@ -14,7 +19,7 @@ Brahms-MMS is a tool designed to efficiently manage large music collections loca
 ### Frontend
 
 - **React**: JavaScript library for building user interfaces.
-- **Pico CSS:** A leightweight CSS franework. 
+- **Pico CSS:** A leightweight CSS framework. 
 
 ### Backend
 

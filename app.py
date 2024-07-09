@@ -6,9 +6,8 @@ from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from include.database import create_database, process_files, get_db_connection
 from include.searchfunction import search_database
-# from include.playlist_manager import (
-#     init_db, find_and_process_playlists, add_track_to_playlist, remove_track_from_playlist, get_db_connection
-# )
+from include.playlist_manager import get_playlists, add_track_to_playlist
+
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 CORS(app)
@@ -52,11 +51,35 @@ def ensure_directories_exist(config):
 @app.route('/api/search', methods=['GET'])
 def search():
     query = request.args.get('query')
+    page = int(request.args.get('page', 1))
+    per_page = 20  # Number of results per page
+
     if not query:
         return jsonify([])
 
     conn = get_db_connection('audio_files.db')
-    results = search_database(conn, [query])
+    cursor = conn.cursor()
+
+    # Calculate offset for pagination
+    offset = (page - 1) * per_page
+
+    # Prepare the SQL query with pagination
+    sql_query = """
+    SELECT id, title, artist, album, cover_art
+    FROM audio_files
+    WHERE title LIKE ? OR artist LIKE ? OR album LIKE ?
+    ORDER BY title
+    LIMIT ? OFFSET ?
+    """
+
+    # Execute the query
+    search_term = f"%{query}%"
+    cursor.execute(sql_query, (search_term, search_term, search_term, per_page, offset))
+    
+    # Fetch results
+    results = cursor.fetchall()
+
+    # Format results
     formatted_results = [
         {
             'id': row['id'],
@@ -67,6 +90,7 @@ def search():
         }
         for row in results
     ]
+
     conn.close()
     return jsonify(formatted_results)
 
@@ -84,6 +108,36 @@ def serve(path):
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
+    
+# Playlist logic
+
+@app.route('/api/playlists', methods=['GET'])
+def get_playlists_route():
+    config = load_config()
+    playlist_directory = config['playlist_directory']
+    playlists = get_playlists(playlist_directory)
+    return jsonify(playlists)
+
+@app.route('/api/add_to_playlist', methods=['POST'])
+def add_to_playlist_route():
+    data = request.json
+    track_id = data['trackId']
+    playlist_name = data['playlist']
+    
+    config = load_config()
+    playlist_directory = config['playlist_directory']
+    
+    conn = get_db_connection('audio_files.db')
+    track = conn.execute('SELECT path, filename FROM audio_files WHERE id = ?', (track_id,)).fetchone()
+    conn.close()
+    
+    if track:
+        file_path = os.path.join(track['path'], track['filename'])
+        result = add_track_to_playlist(playlist_directory, playlist_name, file_path)
+        if result:
+            return jsonify({'success': True, 'message': 'Track added to playlist'})
+    
+    return jsonify({'success': False, 'message': 'Failed to add track to playlist'}), 400
 
 if __name__ == '__main__':
     config = load_config()
