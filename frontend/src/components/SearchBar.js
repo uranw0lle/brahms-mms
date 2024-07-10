@@ -114,7 +114,7 @@ const SearchBar = () => {
                                     src={addToPlaylistIcon} 
                                     alt="Add to Playlist" 
                                     onClick={() => handleAddToPlaylist(result)}
-                                    style={{ cursor: 'pointer', width: '24px', height: '24px' }}
+                                    className='add-to-playlist-icon'
                                 />
                             </li>
                         ))}

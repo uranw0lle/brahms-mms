@@ -9,7 +9,7 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <h1>Music Search App</h1>
+                <h1>Brahms Music Manager</h1>
                 <SearchBar />
             </header>
         </div>
